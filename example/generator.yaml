@@ -1,0 +1,10 @@
+apiVersion: caffeine.lu
+kind: SecretManager
+metadata:
+  name: the-secret
+  annotations:
+    hello: there
+  labels:
+    some_label: comes_from_the_manifest
+secrets:
+  - some_database

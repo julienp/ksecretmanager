@@ -1,0 +1,4 @@
+commonLabels:
+  another_label: applied_by_kustomize
+generators:
+  - generator.yaml
