@@ -4,14 +4,16 @@ Kustomize plugin to load secrets from [Secret Manager](https://cloud.google.com/
 
 Install the plugin where kustomize can find it, see the [documentation](https://kubectl.docs.kubernetes.io/guides/extending_kustomize/#placement).
 
-Add a generator to your kustomization.yaml:
+Add a the generator to your kustomization.yaml:
 
 ```yaml
+resources:
+  - ...
 generators:
-  - generator.yaml
+  - my-secret.yaml
 ```
 
-Create a generator:
+Create `my-secret.yaml`:
 
 ```yaml
 apiVersion: caffeine.lu
