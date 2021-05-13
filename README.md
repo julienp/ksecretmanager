@@ -16,7 +16,7 @@ generators:
 Create `my-secret.yaml`:
 
 ```yaml
-apiVersion: caffeine.lu
+apiVersion: github.com/julienp
 kind: SecretManager
 metadata:
   name: the-secret

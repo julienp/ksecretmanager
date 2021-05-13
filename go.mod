@@ -1,4 +1,4 @@
-module caffeine.lu/ksecretmanager
+module github.com/julienp/ksecretmanager
 
 go 1.16
 
