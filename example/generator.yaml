@@ -7,4 +7,6 @@ metadata:
   labels:
     some_label: comes_from_the_manifest
 secrets:
-  - some_database
+  - name: some_database
+  - name: my_secret
+    key: ANOTHER_SECRET

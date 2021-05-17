@@ -29,11 +29,16 @@ type Secret struct {
 	Data       map[string]string `yaml:"data"`
 }
 
+type SecretName struct {
+	Name string `yaml:"name"`
+	Key  string `yaml:"key,omitempty"`
+}
+
 type SecretManager struct {
-	APIVersion string   `yaml:"apiVersion"`
-	Kind       string   `yaml:"kind"`
-	Metadata   Metadata `yaml:"metadata"`
-	Secrets    []string `yaml:"secrets"`
+	APIVersion string       `yaml:"apiVersion"`
+	Kind       string       `yaml:"kind"`
+	Metadata   Metadata     `yaml:"metadata"`
+	Secrets    []SecretName `yaml:"secrets"`
 }
 
 func main() {
@@ -60,12 +65,16 @@ func main() {
 
 	secretData := map[string]string{}
 	for _, secret := range parsed.Secrets {
-		name := "projects/" + projectId + "/secrets/" + secret + "/versions/latest"
+		name := "projects/" + projectId + "/secrets/" + secret.Name + "/versions/latest"
 		value, err := accessSecretVersion(name)
 		if err != nil {
 			log.Fatalf("Failed to load secret from secret manager: %s", err)
 		}
-		secretData[secret] = base64.StdEncoding.EncodeToString(value)
+		key := secret.Key
+		if key == "" {
+			key = secret.Name
+		}
+		secretData[key] = base64.StdEncoding.EncodeToString(value)
 	}
 
 	manifest := Secret{

@@ -21,8 +21,9 @@ kind: SecretManager
 metadata:
   name: the-secret
 secrets:
-  - some_database_password
-  - another_secret
+  - name: some_database_password
+  - name: another_secret
+    key: ANOTHER_SECRET # optional, the key to use in the k8s Secret
 ```
 
 This will generate the following secret:
@@ -34,6 +35,6 @@ metadata:
   name: the-secret
 type: Opaque
 data:
-  some_database_password: ...
-  another_secret: ...
+  some_database_password: <value>
+  ANOTHER_SECRET: <value>
 ```
