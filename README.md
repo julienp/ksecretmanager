@@ -21,9 +21,16 @@ kind: SecretManager
 metadata:
   name: the-secret
 secrets:
-  - name: some_database_password
+  - name: some_database_password # The name as specified in Google Secrets manager
   - name: another_secret
     key: ANOTHER_SECRET # optional, the key to use in the k8s Secret
+```
+
+Provide `PROJECT_ID` as env variable when running kustomize:
+
+```bash
+make build
+PROJECT_ID=<my project id> KUSTOMIZE_PLUGIN_HOME=`pwd`/bin kustomize build --enable_alpha_plugins ./example
 ```
 
 This will generate the following secret:
