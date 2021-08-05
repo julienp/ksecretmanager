@@ -7,7 +7,9 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"math/rand"
 	"os"
+	"strconv"
 
 	secretmanager "cloud.google.com/go/secretmanager/apiv1"
 	secretmanagerpb "google.golang.org/genproto/googleapis/cloud/secretmanager/v1"
@@ -48,8 +50,13 @@ func main() {
 	}
 	generator := flag.Arg(0)
 
+	dry_run, cast_err := strconv.ParseBool(os.Getenv("DRY_RUN"))
+	if cast_err != nil {
+		dry_run = false
+	}
+
 	projectId := os.Getenv("PROJECT_ID")
-	if projectId == "" {
+	if !dry_run && projectId == "" {
 		log.Fatal("Expected env PROJECT_ID to be set")
 	}
 
@@ -66,13 +73,20 @@ func main() {
 	secretData := map[string]string{}
 	for _, secret := range parsed.Secrets {
 		name := "projects/" + projectId + "/secrets/" + secret.Name + "/versions/latest"
-		value, err := accessSecretVersion(name)
-		if err != nil {
-			log.Fatalf("Failed to load secret from secret manager: %s", err)
-		}
+
+		var value []byte
 		key := secret.Key
 		if key == "" {
 			key = secret.Name
+		}
+		if !dry_run {
+			value, err = accessSecretVersion(name)
+			if err != nil {
+				log.Fatalf("Failed to load secret from secret manager: %s", err)
+			}
+		} else {
+			value = make([]byte, 30)
+			rand.Read(value)
 		}
 		secretData[key] = base64.StdEncoding.EncodeToString(value)
 	}

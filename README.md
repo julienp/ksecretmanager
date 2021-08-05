@@ -33,6 +33,14 @@ make build
 PROJECT_ID=<my project id> KUSTOMIZE_PLUGIN_HOME=`pwd`/bin kustomize build --enable_alpha_plugins ./example
 ```
 
+`DRY_RUN` as env variable to mock the creation of secrets, useful if we don't want this plugin to hit secrets manager.
+
+```bash
+make build
+DRY_RUN=1 PROJECT_ID=<my project id> KUSTOMIZE_PLUGIN_HOME=`pwd`/bin kustomize build --enable_alpha_plugins ./example
+```
+
+
 This will generate the following secret:
 
 ```yaml
